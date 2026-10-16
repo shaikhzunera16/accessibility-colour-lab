@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f7fb">
+  <title>Accessibility Colour Lab</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header class="site-header">
+    <div class="brand-mark" aria-hidden="true">◒</div>
+    <div>
+      <p class="eyebrow">DESIGN TOOLS / ACCESSIBILITY</p>
+      <h1>Accessibility Colour Lab</h1>
+      <p class="subtitle">Check contrast, preview colour-blindness simulations, and build a more readable palette.</p>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="panel palette-panel" aria-labelledby="palette-title">
+      <div class="section-heading">
+        <div><p class="eyebrow">01 / YOUR COLOURS</p><h2 id="palette-title">Palette workspace</h2></div>
+        <span class="count-pill" id="colour-count">5 colours</span>
+      </div>
+      <p class="help-text">Use 3–8 colours. Enter a HEX value or choose a colour. Results recalculate as you edit.</p>
+      <div id="palette-list" class="palette-list"></div>
+      <div class="toolbar">
+        <button class="button button-secondary" id="add-colour" type="button">＋ Add colour</button>
+        <button class="button button-secondary" id="generate-palette" type="button">✦ Generate from base</button>
+        <button class="button button-primary" id="export-css" type="button">Export CSS variables</button>
+      </div>
+      <p class="status-message" id="palette-status" role="status" aria-live="polite"></p>
+      <div class="export-wrap" id="export-wrap" hidden>
+        <label for="css-output">CSS custom properties</label>
+        <textarea id="css-output" rows="7" spellcheck="false" readonly></textarea>
+        <button class="button button-secondary" id="copy-css" type="button">Copy CSS</button>
+      </div>
+    </section>
+
+    <section class="panel" aria-labelledby="matrix-title">
+      <div class="section-heading">
+        <div><p class="eyebrow">02 / WCAG CONTRAST</p><h2 id="matrix-title">Contrast matrix</h2></div>
+        <span class="legend-chip"><span class="legend-dot pass"></span> Pass <span class="legend-dot fail"></span> Fail</span>
+      </div>
+      <p class="help-text">Ratios use WCAG relative luminance with sRGB gamma correction. AA: 4.5:1 normal / 3:1 large. AAA: 7:1 normal / 4.5:1 large.</p>
+      <div class="table-scroll">
+        <table id="contrast-table">
+          <caption>Contrast ratio and WCAG AA/AAA results for every colour pair. Each pair is shown once.</caption>
+          <thead><tr><th scope="col">Colour pair</th><th scope="col">Ratio</th><th scope="col">AA normal</th><th scope="col">AA large</th><th scope="col">AAA normal</th><th scope="col">AAA large</th><th scope="col">AA fix</th></tr></thead>
+          <tbody id="contrast-body"></tbody>
+        </table>
+      </div>
+      <p class="formula-note"><strong>Verification:</strong> Black (#000000) against white (#FFFFFF) should be exactly 21:1. The calculation applies the sRGB gamma threshold (0.04045), converts channels to linear light, then uses luminance weights 0.2126 / 0.7152 / 0.0722.</p>
+    </section>
+
+    <section class="panel" aria-labelledby="preview-title">
+      <div class="section-heading">
+        <div><p class="eyebrow">03 / LIVE PREVIEW</p><h2 id="preview-title">Sample UI & vision simulation</h2></div>
+      </div>
+      <div class="preview-controls">
+        <div class="field">
+          <label for="foreground-select">Text / foreground</label>
+          <select id="foreground-select"></select>
+        </div>
+        <div class="field">
+          <label for="background-select">Background</label>
+          <select id="background-select"></select>
+        </div>
+      </div>
+      <div class="sample-grid">
+        <article class="sample-frame">
+          <div class="frame-label">NORMAL VISION</div>
+          <div id="sample-card" class="sample-card">
+            <span class="sample-kicker">DESIGN SYSTEM / PREVIEW</span>
+            <h3 id="sample-heading">Make every colour count.</h3>
+            <p id="sample-paragraph">Clear contrast helps more people read, understand, and use your product. Test your palette before it ships.</p>
+            <button id="sample-button" type="button">Explore the palette <span aria-hidden="true">→</span></button>
+            <p class="sample-ratio" id="sample-ratio">Contrast ratio: 21:1</p>
+          </div>
+        </article>
+        <article class="sample-frame simulation-frame">
+          <div class="frame-label">PROTANOPIA <span>Reduced red sensitivity</span></div>
+          <div class="simulation-stage protanopia" id="sim-protanopia">
+            <div class="sample-card simulated-card" id="card-protanopia">
+              <span class="sample-kicker">DESIGN SYSTEM / PREVIEW</span><h3>Make every colour count.</h3>
+              <p>Clear contrast helps more people read, understand, and use your product. Test your palette before it ships.</p><button type="button">Explore the palette <span aria-hidden="true">→</span></button>
+              <p class="sample-ratio" id="ratio-protanopia"></p>
+            </div>
+          </div>
+        </article>
+        <article class="sample-frame simulation-frame">
+          <div class="frame-label">DEUTERANOPIA <span>Reduced green sensitivity</span></div>
+          <div class="simulation-stage deuteranopia" id="sim-deuteranopia">
+            <div class="sample-card simulated-card" id="card-deuteranopia">
+              <span class="sample-kicker">DESIGN SYSTEM / PREVIEW</span><h3>Make every colour count.</h3>
+              <p>Clear contrast helps more people read, understand, and use your product. Test your palette before it ships.</p><button type="button">Explore the palette <span aria-hidden="true">→</span></button>
+              <p class="sample-ratio" id="ratio-deuteranopia"></p>
+            </div>
+          </div>
+        </article>
+        <article class="sample-frame simulation-frame">
+          <div class="frame-label">TRITANOPIA <span>Reduced blue sensitivity</span></div>
+          <div class="simulation-stage tritanopia" id="sim-tritanopia">
+            <div class="sample-card simulated-card" id="card-tritanopia">
+              <span class="sample-kicker">DESIGN SYSTEM / PREVIEW</span><h3>Make every colour count.</h3>
+              <p>Clear contrast helps more people read, understand, and use your product. Test your palette before it ships.</p><button type="button">Explore the palette <span aria-hidden="true">→</span></button>
+              <p class="sample-ratio" id="ratio-tritanopia"></p>
+            </div>
+          </div>
+        </article>
+      </div>
+      <p class="help-text simulation-disclaimer">Simulations are approximations for design review, not a substitute for testing with people with colour-vision deficiencies. Contrast ratios are calculated from the original colours.</p>
+    </section>
+
+    <section class="panel method-panel" aria-labelledby="method-title">
+      <p class="eyebrow">HOW IT WORKS</p>
+      <h2 id="method-title">Built around the WCAG formula</h2>
+      <div class="method-grid">
+        <div><span class="step-number">1</span><h3>Linearize sRGB</h3><p>For each normalized channel, use <code>c / 12.92</code> when c ≤ 0.04045; otherwise use <code>((c + 0.055) / 1.055) ^ 2.4</code>.</p></div>
+        <div><span class="step-number">2</span><h3>Calculate luminance</h3><p><code>L = 0.2126R + 0.7152G + 0.0722B</code>, using the linearized channels.</p></div>
+        <div><span class="step-number">3</span><h3>Calculate contrast</h3><p><code>(lighter luminance + 0.05) / (darker luminance + 0.05)</code>. The result ranges from 1:1 to 21:1.</p></div>
+      </div>
+    </section>
+    <footer><span>Accessibility Colour Lab</span><span>Contrast is one part of accessible design.</span></footer>
+  </main>
+  <svg class="filter-defs" aria-hidden="true" focusable="false">
+    <filter id="filter-protanopia" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0.567 0.433 0 0 0  0.558 0.442 0 0 0  0 0.242 0.758 0 0  0 0 0 1 0"/></filter>
+    <filter id="filter-deuteranopia" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0.625 0.375 0 0 0  0.7 0.3 0 0 0  0 0.3 0.7 0 0  0 0 0 1 0"/></filter>
+    <filter id="filter-tritanopia" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values="0.95 0.05 0 0 0  0 0.433 0.567 0 0  0 0.475 0.525 0 0  0 0 0 1 0"/></filter>
+  </svg>
+  <script src="index.js" defer></script>
+</body>
+</html>
